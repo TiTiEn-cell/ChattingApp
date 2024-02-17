@@ -1,15 +1,31 @@
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { StartScreen } from './scr/screens'
+import React, { useEffect, useState } from 'react'
+import { LoginScreen, StartScreen } from './scr/screens'
+import { useAsyncStorage } from '@react-native-async-storage/async-storage'
+import TabNavigator from './scr/navigators/TabNavigator'
+import AuthNavigator from './scr/navigators/AuthNavigator'
+import { NavigationContainer } from '@react-navigation/native'
 
 const App = () => {
+  const [accessToken, setAccessToken] = useState('')
+  const {getItem, setItem} = useAsyncStorage('assetToken')
+
+
+  useEffect(() =>{
+    checkLogin();
+  }, [] )
+
+    const checkLogin = async () =>{
+      const token = await getItem();
+      token && setAccessToken(token);
+}
   return (
-    <View>
-    <StatusBar barStyle = 'dark-content' backgroundColor = 'purple'/>
-    <StartScreen/>
-    </View>
-    
-    
+    <>
+    <StatusBar barStyle = 'dark-content' backgroundColor = 'transparent' translucent/>
+    <NavigationContainer>
+      {accessToken ? <TabNavigator/> : <LoginScreen/>}
+    </NavigationContainer>
+    </>
   )
 }
 
