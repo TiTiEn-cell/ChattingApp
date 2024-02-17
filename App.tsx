@@ -5,6 +5,7 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import TabNavigator from './scr/navigators/TabNavigator'
 import AuthNavigator from './scr/navigators/AuthNavigator'
 import { NavigationContainer } from '@react-navigation/native'
+import SignUpScreen from './scr/screens/auth/SignUpScreen'
 
 const App = () => {
   const [accessToken, setAccessToken] = useState('')
@@ -23,7 +24,7 @@ const App = () => {
     <>
     <StatusBar barStyle = 'dark-content' backgroundColor = 'transparent' translucent/>
     <NavigationContainer>
-      {accessToken ? <TabNavigator/> : <LoginScreen/>}
+      {accessToken ? <TabNavigator/> : <SignUpScreen/>}
     </NavigationContainer>
     </>
   )
