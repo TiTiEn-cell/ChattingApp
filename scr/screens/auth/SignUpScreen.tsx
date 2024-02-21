@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({navigation} : any) => {
   const [checked, setChecked] = useState(false);
 
   const toggleCheckBox = () => {
@@ -20,7 +20,7 @@ const SignUpScreen = () => {
     <View>
       {/* Background image --------------------------------------------------------------------------*/}
       <ImageBackground
-        source={require('../../assets/images/Background2.png')}
+        source={require('../../assets/images/BackGround3.png')}
         style={{
           width: Dimensions.get('screen').width,
           height: Dimensions.get('screen').height,
@@ -31,10 +31,10 @@ const SignUpScreen = () => {
 
         {/* logo app ---------------------------------------------------------------------------------*/}
         <Image
-          source={require('../../assets/images/LogoCat.png')}
+          source={require('../../assets/images/TalksLogo.png')}
           style={{
-            width: 180,
-            height: 135,
+            width: 100,
+            height: 100,
             position: 'absolute',
             top: 58,
           }}
@@ -170,7 +170,7 @@ const SignUpScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Already have an account?*/}
+        {/* Already have an account? -----------------------------------------------------------------------*/}
         <View
           style={{
             flexDirection: 'row',
@@ -182,13 +182,15 @@ const SignUpScreen = () => {
             }}>
             Already have an account?
           </Text>
-          {/* Login */}
+          {/* Login ----------------------------------------------------------------------------------*/}
           <TouchableOpacity>
             <Text
               style={{
                 fontSize: 16,
                 fontWeight: 'bold',
-              }}>
+              }}
+              onPress={()=>navigation.navigate('LoginScreen')}
+              >
               Login
             </Text>
           </TouchableOpacity>

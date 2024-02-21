@@ -7,20 +7,32 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Button,
+  Pressable,
 } from 'react-native';
 import React, {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import authenticationAPI from '../../apis/authAPI';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: any) => {
   const [checked, setChecked] = useState(false);
 
   const toggleCheckBox = () => {
     setChecked(!checked);
   };
+  const handleLogin =async ()=>{
+    try {
+      const res = await authenticationAPI.HandleAuthentication('/hello');
+      console.log(res);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <View>
       {/* Background image --------------------------------------------------------------------------*/}
       <ImageBackground
-        source={require('../../assets/images/Background2.png')}
+        source={require('../../assets/images/BackGround3.png')}
         style={{
           width: Dimensions.get('screen').width,
           height: Dimensions.get('screen').height,
@@ -30,10 +42,10 @@ const LoginScreen = () => {
         resizeMode="stretch">
         {/* logo app ---------------------------------------------------------------------------------*/}
         <Image
-          source={require('../../assets/images/LogoCat.png')}
+          source={require('../../assets/images/TalksLogo.png')}
           style={{
-            width: 180,
-            height: 135,
+            width: 100,
+            height: 100,
             position: 'absolute',
             top: 58,
           }}
@@ -180,7 +192,9 @@ const LoginScreen = () => {
               borderRadius: 30,
               width: 271,
               height: 53,
-            }}>
+            }}
+            onPress={()=>handleLogin()}
+            >
             <Text
               style={{
                 fontSize: 32,
@@ -189,9 +203,10 @@ const LoginScreen = () => {
               Login
             </Text>
           </TouchableOpacity>
+            
         </View>
 
-        {/* Don't have an account text*/}
+        {/* Don't have an account text -----------------------------------------------------------------------*/}
         <View
           style={{
             flexDirection: 'row',
@@ -203,12 +218,15 @@ const LoginScreen = () => {
             }}>
             Don’t have an account?
           </Text>
-          {/* Register */}
+
+          {/* Register ------------------------------------------------------------------------------------*/}
           <TouchableOpacity>
             <Text style = {{
               fontSize: 16,
               fontWeight: 'bold',
-            }}>Register</Text>
+            }}
+            onPress={()=>navigation.navigate('SignUpScreen')}
+            >Register</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
