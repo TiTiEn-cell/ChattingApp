@@ -9,13 +9,36 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {useState} from 'react';
+import authenticationAPI from '../../apis/authApi';
+import { LoadingScreen } from '..';
+
+const initValue = {
+  phoneNumber: '',
+  password: '',
+  confirmPassword: '',
+}
 
 const SignUpScreen = ({navigation} : any) => {
-  const [checked, setChecked] = useState(false);
+  const [values, setValues] = useState(initValue)
+  const [isLoading, setIsLoading] = useState(false);
 
-  const toggleCheckBox = () => {
-    setChecked(!checked);
-  };
+  const handleChangeValue = (key: string, value: string) =>{
+    const data: any = {...values}
+    data[`${key}`] = value;
+    setValues(data);
+  }
+  const handleSignUp = async ()=>{
+    setIsLoading(true)
+    try {
+      const res = await authenticationAPI.HandleAuthentication('/register', values, 'post');
+      console.log(res);
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
+  }
+
   return (
     <View>
       {/* Background image --------------------------------------------------------------------------*/}
@@ -87,6 +110,8 @@ const SignUpScreen = ({navigation} : any) => {
                 paddingLeft: 55,
               }}
               placeholder="Số điện thoại"
+              value= {values.phoneNumber}
+              onChangeText={val=>handleChangeValue('phoneNumber', val)}
             />
           </View>
 
@@ -117,6 +142,8 @@ const SignUpScreen = ({navigation} : any) => {
               }}
               secureTextEntry
               placeholder="Mật khẩu"
+              value= {values.password}
+              onChangeText={val=>handleChangeValue('password', val)}
             />
           </View>
 
@@ -147,6 +174,8 @@ const SignUpScreen = ({navigation} : any) => {
               }}
               secureTextEntry
               placeholder="Nhập lại mật khẩu"
+              value= {values.confirmPassword}
+              onChangeText={val=>handleChangeValue('confirmPassword', val)}
             />
           </View>
 
@@ -159,7 +188,9 @@ const SignUpScreen = ({navigation} : any) => {
               borderRadius: 30,
               width: 271,
               height: 53,
-            }}>
+            }}
+            onPress={handleSignUp}
+            >
             <Text
               style={{
                 fontSize: 32,
@@ -196,6 +227,7 @@ const SignUpScreen = ({navigation} : any) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
+      <LoadingScreen visible = {isLoading}/>
     </View>
   );
 };

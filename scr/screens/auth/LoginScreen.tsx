@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import authenticationAPI from '../../apis/authAPI';
+import authenticationAPI from '../../apis/authApi';
 
 const LoginScreen = ({navigation}: any) => {
   const [checked, setChecked] = useState(false);
