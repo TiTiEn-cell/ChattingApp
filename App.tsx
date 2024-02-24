@@ -1,36 +1,35 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { HomeScreen, LoginScreen, StartScreen } from './scr/screens'
-import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-import TabNavigator from './scr/navigators/TabNavigator'
-import AuthNavigator from './scr/navigators/AuthNavigator'
-import { NavigationContainer } from '@react-navigation/native'
-import SignUpScreen from './scr/screens/auth/SignUpScreen'
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {HomeScreen, LoginScreen, StartScreen} from './scr/screens';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
+import TabNavigator from './scr/navigators/TabNavigator';
+import AuthNavigator from './scr/navigators/AuthNavigator';
+import {NavigationContainer} from '@react-navigation/native';
+import SignUpScreen from './scr/screens/auth/SignUpScreen';
+import {Provider} from 'react-redux';
+import store from './scr/redux/store';
+import AppRouters from './scr/navigators/AppRouters';
 
 const App = () => {
-  const [accessToken, setAccessToken] = useState('')
-
-  const {getItem, setItem} = useAsyncStorage('assetToken')
+  const {getItem, setItem} = useAsyncStorage('assetToken');
 
 
-  useEffect(() =>{
-    checkLogin();
-  }, [] )
-
-    const checkLogin = async () =>{
-      const token = await getItem();
-      token && setAccessToken(token);
-}
   return (
     <>
-    <StatusBar barStyle = 'dark-content' backgroundColor = 'transparent' translucent/>
-    <NavigationContainer>
-      {accessToken ? <TabNavigator/> : <AuthNavigator/>}
-    </NavigationContainer>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppRouters/>
+        </NavigationContainer>
+      </Provider>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

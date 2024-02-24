@@ -8,9 +8,12 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import authenticationAPI from '../../apis/authApi';
 import { LoadingScreen } from '..';
+import { useDispatch } from 'react-redux';
+import { addAuth } from '../../redux/reducers/authReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initValue = {
   phoneNumber: '',
@@ -19,8 +22,12 @@ const initValue = {
 }
 
 const SignUpScreen = ({navigation} : any) => {
-  const [values, setValues] = useState(initValue)
+  const [values, setValues] = useState(initValue);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const dispatch = useDispatch();
+
 
   const handleChangeValue = (key: string, value: string) =>{
     const data: any = {...values}
@@ -28,15 +35,29 @@ const SignUpScreen = ({navigation} : any) => {
     setValues(data);
   }
   const handleSignUp = async ()=>{
-    setIsLoading(true)
-    try {
-      const res = await authenticationAPI.HandleAuthentication('/register', values, 'post');
-      console.log(res);
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
+    const {phoneNumber, password, confirmPassword} = values
+
+    if(phoneNumber && password && confirmPassword){
+
+      setIsLoading(true)
+      try {
+        const res = await authenticationAPI.HandleAuthentication('/register', {
+          phoneNumber: values.phoneNumber,
+          password: values.password
+        }, 'post');
+
+        dispatch(addAuth(res.data))
+        await AsyncStorage.setItem('auth',JSON.stringify(res.data))
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error)
+        setIsLoading(false)
+      }
+    }else{
+      setErrorMessage('Vui lòng nhập đầy đủ thông tin')
     }
+
+
   }
 
   return (
@@ -178,6 +199,10 @@ const SignUpScreen = ({navigation} : any) => {
               onChangeText={val=>handleChangeValue('confirmPassword', val)}
             />
           </View>
+              {/* Error message --------------------------------------------------------------------------- */}
+          {
+            errorMessage && <Text style = {{color: 'red'}}>{errorMessage}</Text>
+          }
 
           {/* Button sign up ------------------------------------------------------------------------------ */}
           <TouchableOpacity
