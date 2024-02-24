@@ -19,7 +19,7 @@ const AppRouters = () => {
         checkLogin();
     },[])
 
-    const checkLogin = async ()=>{
+const checkLogin = async ()=>{
         const res = await getItem();
 
         res && dispatch(addAuth(JSON.parse(res)))

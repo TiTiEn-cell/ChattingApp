@@ -13,17 +13,26 @@ import {
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import authenticationAPI from '../../apis/authApi';
+import { useDispatch } from 'react-redux';
+import { addAuth } from '../../redux/reducers/authReducer';
 
 const LoginScreen = ({navigation}: any) => {
   const [checked, setChecked] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
 
   const toggleCheckBox = () => {
     setChecked(!checked);
   };
   const handleLogin =async ()=>{
     try {
-      const res = await authenticationAPI.HandleAuthentication('/hello');
-      console.log(res);
+      const res = await authenticationAPI.HandleAuthentication('/login',
+      {phoneNumber, password},
+      'post'
+      );
+      dispatch(addAuth(res.data))
     } catch (error) {
       console.log(error)
     }
@@ -98,6 +107,7 @@ const LoginScreen = ({navigation}: any) => {
                 paddingLeft: 55,
               }}
               placeholder="Số điện thoại"
+              onChangeText={(val)=>setPhoneNumber(val)}
             />
           </View>
 
@@ -128,6 +138,7 @@ const LoginScreen = ({navigation}: any) => {
               }}
               secureTextEntry
               placeholder="Mật khẩu"
+              onChangeText={(val)=>setPassword(val)}
             />
           </View>
 
