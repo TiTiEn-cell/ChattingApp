@@ -1,6 +1,6 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {HomeScreen, LoginScreen, StartScreen} from './scr/screens';
+import {HomeScreen, LoginScreen, StartScreen, VertifyScreen} from './scr/screens';
 import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import TabNavigator from './scr/navigators/TabNavigator';
 import AuthNavigator from './scr/navigators/AuthNavigator';

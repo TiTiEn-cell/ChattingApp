@@ -13,8 +13,8 @@ import {
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import authenticationAPI from '../../apis/authApi';
-import { useDispatch } from 'react-redux';
-import { addAuth } from '../../redux/reducers/authReducer';
+import {useDispatch} from 'react-redux';
+import {addAuth} from '../../redux/reducers/authReducer';
 
 const LoginScreen = ({navigation}: any) => {
   const [checked, setChecked] = useState(false);
@@ -26,17 +26,18 @@ const LoginScreen = ({navigation}: any) => {
   const toggleCheckBox = () => {
     setChecked(!checked);
   };
-  const handleLogin =async ()=>{
+  const handleLogin = async () => {
     try {
-      const res = await authenticationAPI.HandleAuthentication('/login',
-      {phoneNumber, password},
-      'post'
+      const res = await authenticationAPI.HandleAuthentication(
+        '/login',
+        {phoneNumber, password},
+        'post',
       );
-      dispatch(addAuth(res.data))
+      dispatch(addAuth(res.data));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <View>
       {/* Background image --------------------------------------------------------------------------*/}
@@ -107,7 +108,7 @@ const LoginScreen = ({navigation}: any) => {
                 paddingLeft: 55,
               }}
               placeholder="Số điện thoại"
-              onChangeText={(val)=>setPhoneNumber(val)}
+              onChangeText={val => setPhoneNumber(val)}
             />
           </View>
 
@@ -138,7 +139,7 @@ const LoginScreen = ({navigation}: any) => {
               }}
               secureTextEntry
               placeholder="Mật khẩu"
-              onChangeText={(val)=>setPassword(val)}
+              onChangeText={val => setPassword(val)}
             />
           </View>
 
@@ -204,8 +205,7 @@ const LoginScreen = ({navigation}: any) => {
               width: 271,
               height: 53,
             }}
-            onPress={()=>handleLogin()}
-            >
+            onPress={() => handleLogin()}>
             <Text
               style={{
                 fontSize: 32,
@@ -214,7 +214,6 @@ const LoginScreen = ({navigation}: any) => {
               Login
             </Text>
           </TouchableOpacity>
-            
         </View>
 
         {/* Don't have an account text -----------------------------------------------------------------------*/}
@@ -225,19 +224,21 @@ const LoginScreen = ({navigation}: any) => {
           <Text
             style={{
               fontSize: 16,
-              marginRight: 5
+              marginRight: 5,
             }}>
             Don’t have an account?
           </Text>
 
           {/* Register ------------------------------------------------------------------------------------*/}
           <TouchableOpacity>
-            <Text style = {{
-              fontSize: 16,
-              fontWeight: 'bold',
-            }}
-            onPress={()=>navigation.navigate('SignUpScreen')}
-            >Register</Text>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}
+              onPress={() => navigation.navigate('SignUpScreen')}>
+              Register
+            </Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
